@@ -2,6 +2,8 @@ package dev.xkmc.lightland.init.registrate;
 
 import dev.xkmc.l2library.repack.registrate.util.entry.EntityEntry;
 import dev.xkmc.lightland.content.common.entity.*;
+import dev.xkmc.lightland.content.common.entity.immaterial.*;
+import dev.xkmc.lightland.content.magic.client.render.immaterial.*;
 import dev.xkmc.lightland.content.questline.mobs.cursedknight.*;
 import dev.xkmc.lightland.content.questline.mobs.layline.LaylineSkeleton;
 import dev.xkmc.lightland.content.questline.mobs.layline.LaylineSkeletonRenderer;
@@ -124,6 +126,26 @@ public class LightlandEntities {
 				.entity("boss_slime", BossSlime::new, MobCategory.MONSTER)
 				.properties(e -> e.sized(2.04F, 2.04F).clientTrackingRange(10))
 				.renderer(() -> MaterialSlimeRenderer::new).loot(BossSlime::loot).defaultLang().register();
+	}
+
+	public static final EntityEntry<EntityCircle> CIRCLE;
+	public static final EntityEntry<EntityRoughFireball> ROUGH_FIREBALL;
+
+	static {
+		CIRCLE = LightLand.REGISTRATE
+				.<EntityCircle>entity("circle", EntityCircle::new, MobCategory.MISC)
+				.properties(e -> e.sized(2F, 2F)
+						.clientTrackingRange(4).updateInterval(20)
+						.setShouldReceiveVelocityUpdates(true))
+				.renderer(() -> RenderCircle::new)
+				.defaultLang().register();
+		ROUGH_FIREBALL = LightLand.REGISTRATE
+				.<EntityRoughFireball>entity("rough_fireball", EntityRoughFireball::new, MobCategory.MISC)
+				.properties(e -> e.sized(0.5F, 0.5F)
+						.clientTrackingRange(4).updateInterval(20)
+						.setShouldReceiveVelocityUpdates(true))
+				.renderer(() -> RenderRoughFireball::new)
+				.defaultLang().register();
 	}
 
 	public static void register() {

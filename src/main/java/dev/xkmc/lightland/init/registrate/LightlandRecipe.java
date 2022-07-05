@@ -5,6 +5,8 @@ import dev.xkmc.l2library.recipe.BaseRecipe;
 import dev.xkmc.l2library.repack.registrate.util.entry.RegistryEntry;
 import dev.xkmc.lightland.content.berserker.recipe.MedArmorRecipe;
 import dev.xkmc.lightland.content.magic.block.RitualCore;
+import dev.xkmc.lightland.content.magic.item.oriental.crafting.WandCircleRecipe;
+import dev.xkmc.lightland.content.magic.item.oriental.crafting.WandRemoveCircleRecipe;
 import dev.xkmc.lightland.content.magic.products.recipe.DefMagicRecipe;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.content.magic.ritual.*;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import static dev.xkmc.lightland.init.LightLand.REGISTRATE;
@@ -45,8 +48,13 @@ public class LightlandRecipe {
 	public static final RegistryEntry<BaseRecipe.RecType<DefMagicRecipe, IMagicRecipe<?>, IMagicRecipe.Inv>> RSM_DEF =
 			REGISTRATE.simple("magic_default", RecipeSerializer.class, () -> new BaseRecipe.RecType<>(DefMagicRecipe.class, RT_MAGIC));
 
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, LightLand.MODID);
+	public static final RegistryObject<RecipeSerializer<WandCircleRecipe>> RS_WAND_CORE = RECIPE.register("wand_circle", () -> WandCircleRecipe.SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<WandRemoveCircleRecipe>> RS_WAND_REMOVE_CORE = RECIPE.register("wand_remove_circle", () -> WandRemoveCircleRecipe.SERIALIZER);
+
 	public static void register(IEventBus bus) {
 		RECIPE_TYPES.register(bus);
+		RECIPE.register(bus);
 	}
 
 }

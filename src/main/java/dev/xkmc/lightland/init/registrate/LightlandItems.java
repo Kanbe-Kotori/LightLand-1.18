@@ -30,6 +30,8 @@ import dev.xkmc.lightland.content.magic.item.MagicScroll;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
 import dev.xkmc.lightland.content.magic.item.ManaStorage;
 import dev.xkmc.lightland.content.magic.item.PotionCore;
+import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.RoughFireball;
 import dev.xkmc.lightland.content.questline.item.DispellWaterBottle;
 import dev.xkmc.lightland.content.questline.item.SlimeTentacleItem;
 import dev.xkmc.lightland.init.LightLand;
@@ -157,6 +159,9 @@ public class LightlandItems {
 	public static final ItemEntry<ManaStorage> ENC_GOLD_NUGGET, ENC_GOLD_INGOT, COOKIE, MELON, CARROT, APPLE;
 	public static final ItemEntry<Item> MAGICIUM_INGOT, MAGICIUM_NUGGET, ETHERNIUM_NUGGET, ETHERNIUM_INGOT;
 
+	public static final ItemEntry<OrientalWand> BASIC_WAND;
+	public static final ItemEntry<RoughFireball> ROUGH_FIREBALL;
+
 	static {
 		ARCANE_SWORD_GILDED = REGISTRATE.item("gilded_arcane_sword", p ->
 						new ArcaneSword(Tiers.IRON, 5, -2.4f, p.stacksTo(1).setNoRepair(), 50))
@@ -194,6 +199,9 @@ public class LightlandItems {
 		MAGICIUM_NUGGET = simpleItem("magicium_nugget");
 		ETHERNIUM_INGOT = simpleItem("ethernium_ingot");
 		ETHERNIUM_NUGGET = simpleItem("ethernium_nugget");
+
+		BASIC_WAND = REGISTRATE.item("basic_wand", p -> new OrientalWand(p)).defaultModel().defaultLang().register();
+		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", p -> new RoughFireball(p)).defaultModel().defaultLang().register();
 	}
 
 	// -------- questline--------

@@ -64,7 +64,9 @@
 	"bad_soul": "怨灵",
 	"holy_powder": "神圣粉末",
 	"unstable_slime": "不稳定生命源质",
-	"boss_slime": "变异源质"
+	"boss_slime": "变异源质",
+	"basic_wand": "基础法杖",
+	"rough_fireball": "粗糙的火球术"
   },
   "block.lightland": {
 	"ritual_core": "仪式祭坛",

@@ -108,6 +108,12 @@
 	  "target.ally": "队友",
 	  "target.enemy": "敌人",
 	  "weight": "重量: %s"
+	},
+	"misc": {
+	  "circle_no_cd": "该魔法阵无使用冷却。",
+	  "total_cd": "该魔法阵总冷却: %stick",
+	  "cd_complete": "当前已冷却完成。",
+	  "cd_not_complete": "当前剩余冷却: %stick"
 	}
   }
 }
