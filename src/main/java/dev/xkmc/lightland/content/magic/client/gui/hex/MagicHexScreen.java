@@ -1,4 +1,4 @@
-package dev.xkmc.lightland.content.magic.gui.hex;
+package dev.xkmc.lightland.content.magic.client.gui.hex;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.l2library.magic.HexCell;
@@ -6,7 +6,7 @@ import dev.xkmc.l2library.magic.HexDirection;
 import dev.xkmc.l2library.menu.WindowBox;
 import dev.xkmc.l2library.util.Frac;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.products.info.ProductState;
 import dev.xkmc.lightland.init.special.MagicRegistry;

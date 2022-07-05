@@ -1,4 +1,4 @@
-package dev.xkmc.lightland.content.magic.products;
+package dev.xkmc.lightland.content.magic.common;
 
 import dev.xkmc.l2library.base.NamedEntry;
 import dev.xkmc.lightland.init.special.LightLandRegistry;

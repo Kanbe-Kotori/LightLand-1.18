@@ -3,7 +3,7 @@ package dev.xkmc.lightland.compat.jei.screen;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import dev.xkmc.lightland.compat.jei.ingredients.ElementIngredient;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 

@@ -1,7 +1,7 @@
 package dev.xkmc.lightland.init.registrate;
 
 import dev.xkmc.l2library.repack.registrate.util.entry.MenuEntry;
-import dev.xkmc.lightland.content.magic.gui.craft.*;
+import dev.xkmc.lightland.content.magic.client.gui.craft.*;
 import dev.xkmc.lightland.init.LightLand;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.inventory.MenuType;

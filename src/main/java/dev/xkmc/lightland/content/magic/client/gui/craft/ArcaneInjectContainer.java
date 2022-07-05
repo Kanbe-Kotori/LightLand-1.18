@@ -1,16 +1,17 @@
-package dev.xkmc.lightland.content.magic.gui.craft;
+package dev.xkmc.lightland.content.magic.client.gui.craft;
 
 import com.google.common.collect.Maps;
 import dev.xkmc.l2library.menu.BaseContainerMenu;
 import dev.xkmc.l2library.menu.SpriteManager;
+import dev.xkmc.lightland.content.arcane.internal.Arcane;
+import dev.xkmc.lightland.content.arcane.internal.ArcaneItemCraftHelper;
+import dev.xkmc.lightland.content.arcane.internal.ArcaneItemUseHelper;
+import dev.xkmc.lightland.content.arcane.internal.ArcaneType;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
-import dev.xkmc.lightland.content.magic.item.MagicScroll;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
 import dev.xkmc.lightland.content.magic.item.ManaStorage;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
-import dev.xkmc.lightland.content.magic.spell.internal.Spell;
-import dev.xkmc.lightland.content.magic.spell.internal.SpellConfig;
 import dev.xkmc.lightland.init.LightLand;
 import dev.xkmc.lightland.init.data.LangData;
 import dev.xkmc.lightland.init.special.MagicRegistry;
@@ -27,22 +28,20 @@ import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> {
+public class ArcaneInjectContainer extends BaseContainerMenu<ArcaneInjectContainer> {
 
-	public static final SpriteManager MANAGER = new SpriteManager(LightLand.MODID, "spell_craft");
-
+	public static final SpriteManager MANAGER = new SpriteManager(LightLand.MODID, "arcane_inject");
 	protected Error err = Error.NO_ITEM;
-	protected Spell<?, ?> spell = null;
+	protected Arcane spell = null;
 	protected Map<MagicElement, Integer> map = Maps.newLinkedHashMap();
 
-	private SpellConfig config = null;
 	private int consume = 0, total_cost = 0, available = 0, ench_count = 0, exceed = 0;
 	private boolean changing = false;
 
-	public SpellCraftContainer(MenuType<SpellCraftContainer> type, int wid, Inventory plInv) {
+	public ArcaneInjectContainer(MenuType<ArcaneInjectContainer> type, int wid, Inventory plInv) {
 		super(type, wid, plInv, MANAGER, (menu) -> new BaseContainer<>(5, menu), true);
 		addSlot("wand_slot", stack -> stack.getItem() instanceof MagicWand);
-		addSlot("input_slot", stack -> stack.getItem() instanceof MagicScroll);
+		addSlot("input_slot", ArcaneItemUseHelper::isArcaneItem);
 		addSlot("ench_slot", stack -> stack.getItem() instanceof ManaStorage);
 		addSlot("output_slot", stack -> false);
 		addSlot("gold_slot", stack -> false);
@@ -58,7 +57,6 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 
 	private Error check() {
 		spell = null;
-		config = null;
 		consume = 0;
 		total_cost = 0;
 		available = 0;
@@ -73,12 +71,11 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 		if (wand.isEmpty() || input.isEmpty() || !output.isEmpty()) {
 			return Error.NO_ITEM;
 		}
-		if (!(wand.getItem() instanceof MagicWand)) {
+		if (!(wand.getItem() instanceof MagicWand magicWand)) {
 			return Error.NO_SPELL;
 		}
-		MagicWand magicWand = (MagicWand) wand.getItem();
 		MagicProduct<?, ?> prod = magicWand.getData(inventory.player, wand);
-		if (prod == null || prod.type != MagicRegistry.MPT_SPELL.get()) {
+		if (prod == null || prod.type != MagicRegistry.MPT_ARCANE.get()) {
 			return Error.NO_SPELL;
 		}
 		if (!prod.usable()) {
@@ -94,18 +91,18 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 			if (map.get(elem) > handler.magicHolder.getElement(elem))
 				return Error.ELEM;
 		}
-		spell = (Spell<?, ?>) prod.item;
-		config = spell.getConfig(inventory.player.level, inventory.player);
-		int cost = config.mana_cost;
-		MagicScroll.ScrollType type = config.type;
-		if (!(input.getItem() instanceof MagicScroll magicScroll)) {
-			return Error.WRONG_SCROLL;
+		spell = (Arcane) prod.item;
+		if (!handler.magicAbility.isArcaneTypeUnlocked(spell.type.get())) {
+			return Error.TYPE_LOCKED;
 		}
-		if (magicScroll.type != type) {
-			return Error.WRONG_SCROLL;
+		total_cost = prod.getCost() * ManaStorage.ARCANE_COST;
+		ArcaneType.Weapon weapon = spell.type.get().weapon;
+		if (!weapon.isValid(input)) {
+			return Error.WRONG_ITEM;
 		}
-		int count = input.getCount();
-		total_cost = count * cost;
+		if (ArcaneItemCraftHelper.getArcaneOnItem(input, spell.type.get()) != null) {
+			return Error.REPEAT;
+		}
 		if (ench.isEmpty() || !(ench.getItem() instanceof ManaStorage)) {
 			return Error.NOT_ENOUGH_MANA;
 		}
@@ -132,14 +129,15 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 			changing = true;
 			ItemStack input = container.getItem(1);
 			container.setItem(1, ItemStack.EMPTY);
-			MagicScroll.initItemStack(spell, input);
+			ArcaneItemCraftHelper.setArcaneOnItem(input, spell);
 			container.setItem(3, input);
 			ItemStack ench = container.getItem(2);
+			ManaStorage mana = (ManaStorage) ench.getItem();
 			ench.shrink(consume);
 			ItemStack gold = container.getItem(4);
 			if (!gold.isEmpty())
 				gold.grow(consume);
-			else container.setItem(4, new ItemStack(((ManaStorage) ench.getItem()).container, consume));
+			else container.setItem(4, new ItemStack(mana.container, consume));
 			LLPlayerData handler = LLPlayerData.get(inventory.player);
 			for (MagicElement elem : map.keySet()) {
 				handler.magicHolder.addElement(elem, -map.get(elem));
@@ -155,11 +153,13 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 		NO_ITEM(0),
 		NO_SPELL(0),
 		LOCKED(0),
-		WRONG_SCROLL(0),
+		TYPE_LOCKED(0),
+		WRONG_ITEM(0),
 		NOT_ENOUGH_MANA(3),
 		CLEAR_GOLD(0),
 		ELEM(0),
-		PASS(1);
+		PASS(1),
+		REPEAT(0);
 
 		final int count;
 
@@ -167,9 +167,9 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 			this.count = count;
 		}
 
-		public Component getDesc(SpellCraftContainer cont) {
-			if (this == WRONG_SCROLL)
-				return LangData.get(this).append(cont.config.type.toItem().getDescription());
+		public Component getDesc(ArcaneInjectContainer cont) {
+			if (this == WRONG_ITEM)
+				return LangData.get(this, cont.spell.type.get().weapon);
 			if (this == NOT_ENOUGH_MANA)
 				return LangData.get(this, cont.consume - cont.ench_count, cont.total_cost, cont.available);
 			if (this == PASS)
@@ -182,6 +182,10 @@ public class SpellCraftContainer extends BaseContainerMenu<SpellCraftContainer> 
 			return count;
 		}
 
+		@Override
+		public Class<? extends Enum<?>> mux() {
+			return this == WRONG_ITEM ? ArcaneType.Weapon.class : null;
+		}
 	}
 
 }

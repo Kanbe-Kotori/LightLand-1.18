@@ -7,7 +7,7 @@ import dev.xkmc.lightland.content.common.capability.player.CapProxy;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
 import dev.xkmc.lightland.content.common.capability.player.MagicHolder;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.content.profession.Profession;

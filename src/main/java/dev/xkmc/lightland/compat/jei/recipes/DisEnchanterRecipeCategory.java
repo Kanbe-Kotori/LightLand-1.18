@@ -3,7 +3,7 @@ package dev.xkmc.lightland.compat.jei.recipes;
 import dev.xkmc.l2library.recipe.BaseRecipeCategory;
 import dev.xkmc.lightland.compat.jei.LightLandJeiPlugin;
 import dev.xkmc.lightland.compat.jei.ingredients.ElementIngredient;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.init.LightLand;
 import dev.xkmc.lightland.init.registrate.LightlandItems;

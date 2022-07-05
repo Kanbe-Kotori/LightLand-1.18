@@ -1,11 +1,11 @@
-package dev.xkmc.lightland.content.magic.gui.tree;
+package dev.xkmc.lightland.content.magic.client.gui.tree;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.lightland.content.common.capability.player.MagicHolder;
 import dev.xkmc.lightland.content.common.gui.GuiTabType;
-import dev.xkmc.lightland.content.magic.gui.hex.MagicHexScreen;
+import dev.xkmc.lightland.content.magic.client.gui.hex.MagicHexScreen;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.products.MagicProductType;
 import dev.xkmc.lightland.content.magic.products.info.TypeConfig;

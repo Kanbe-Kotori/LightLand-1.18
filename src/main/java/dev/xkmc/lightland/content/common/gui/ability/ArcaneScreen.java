@@ -6,7 +6,7 @@ import dev.xkmc.l2library.repack.registrate.util.entry.RegistryEntry;
 import dev.xkmc.lightland.content.arcane.internal.ArcaneType;
 import dev.xkmc.lightland.content.common.capability.player.CapProxy;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
 import dev.xkmc.lightland.init.data.LangData;
 import dev.xkmc.lightland.init.special.LightLandRegistry;
 import dev.xkmc.lightland.network.packets.CapToServer;

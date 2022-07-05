@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
 import dev.xkmc.lightland.content.magic.item.MagicScroll;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.spell.internal.Spell;
 import dev.xkmc.lightland.init.data.LangData;
 import dev.xkmc.lightland.network.packets.CapToClient;

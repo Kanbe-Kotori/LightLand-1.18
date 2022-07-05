@@ -3,7 +3,7 @@ package dev.xkmc.lightland.content.common.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import dev.xkmc.lightland.content.common.render.LLRenderState;
-import dev.xkmc.lightland.content.magic.render.SpellComponent;
+import dev.xkmc.lightland.content.magic.client.render.SpellComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

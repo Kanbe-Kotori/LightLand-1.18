@@ -1,12 +1,12 @@
-package dev.xkmc.lightland.content.magic.gui.craft;
+package dev.xkmc.lightland.content.magic.client.gui.craft;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.l2library.menu.BaseContainerScreen;
 import dev.xkmc.l2library.menu.SpriteManager;
 import dev.xkmc.lightland.compat.jei.screen.ExtraInfo;
 import dev.xkmc.lightland.content.common.capability.player.CapProxy;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.init.data.LangData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 
 @ParametersAreNonnullByDefault
-public class SpellCraftScreen extends BaseContainerScreen<SpellCraftContainer> implements ExtraInfo<Map.Entry<MagicElement, Integer>> {
+public class ArcaneInjectScreen extends BaseContainerScreen<ArcaneInjectContainer> implements ExtraInfo<Map.Entry<MagicElement, Integer>> {
 
-	public SpellCraftScreen(SpellCraftContainer cont, Inventory plInv, Component title) {
+	public ArcaneInjectScreen(ArcaneInjectContainer cont, Inventory plInv, Component title) {
 		super(cont, plInv, title);
 	}
 
@@ -30,9 +30,9 @@ public class SpellCraftScreen extends BaseContainerScreen<SpellCraftContainer> i
 		SpriteManager sm = menu.sprite;
 		SpriteManager.ScreenRenderer sr = sm.getRenderer(this);
 		sr.start(matrix);
-		if (menu.err == SpellCraftContainer.Error.PASS)
+		if (menu.err == ArcaneInjectContainer.Error.PASS)
 			sr.draw(matrix, "arrow", sm.within("arrow", mx, my) ? "arrow_2" : "arrow_1");
-		else if (menu.err != SpellCraftContainer.Error.NO_ITEM)
+		else if (menu.err != ArcaneInjectContainer.Error.NO_ITEM)
 			sr.draw(matrix, "arrow", "arrow_3");
 		getInfo((ex, ey, w, h, ent) -> {
 			int count = ent.getValue();
@@ -45,7 +45,7 @@ public class SpellCraftScreen extends BaseContainerScreen<SpellCraftContainer> i
 	protected void renderTooltip(PoseStack matrix, int mx, int my) {
 		super.renderTooltip(matrix, mx, my);
 		if (menu.sprite.within("arrow", mx - getGuiLeft(), my - getGuiTop()) &&
-				menu.err != SpellCraftContainer.Error.NO_ITEM)
+				menu.err != ArcaneInjectContainer.Error.NO_ITEM)
 			renderTooltip(matrix, menu.err.getDesc(menu), mx, my);
 		getInfoMouse(mx - getGuiLeft(), my - getGuiTop(), (ex, ey, w, h, ent) -> {
 			int count = ent.getValue();
@@ -59,7 +59,7 @@ public class SpellCraftScreen extends BaseContainerScreen<SpellCraftContainer> i
 	@Override
 	public boolean mouseClicked(double mx, double my, int button) {
 		SpriteManager sm = menu.sprite;
-		if (menu.err == SpellCraftContainer.Error.PASS && sm.within("arrow", mx - getGuiLeft(), my - getGuiTop())) {
+		if (menu.err == ArcaneInjectContainer.Error.PASS && sm.within("arrow", mx - getGuiLeft(), my - getGuiTop())) {
 			click(0);
 			return true;
 		}
@@ -78,4 +78,5 @@ public class SpellCraftScreen extends BaseContainerScreen<SpellCraftContainer> i
 			i++;
 		}
 	}
+
 }

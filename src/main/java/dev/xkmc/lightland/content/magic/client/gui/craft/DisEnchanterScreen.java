@@ -1,11 +1,11 @@
-package dev.xkmc.lightland.content.magic.gui.craft;
+package dev.xkmc.lightland.content.magic.client.gui.craft;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.l2library.menu.BaseContainerScreen;
 import dev.xkmc.l2library.menu.SpriteManager;
 import dev.xkmc.lightland.compat.jei.screen.ExtraInfo;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 

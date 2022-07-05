@@ -6,6 +6,7 @@ import dev.xkmc.l2library.serial.SerialClass;
 import dev.xkmc.l2library.serial.codec.TagCodec;
 import dev.xkmc.lightland.content.common.capability.player.CapProxy;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.info.ProductState;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.init.data.LangData;

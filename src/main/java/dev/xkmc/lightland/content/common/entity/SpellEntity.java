@@ -2,7 +2,7 @@ package dev.xkmc.lightland.content.common.entity;
 
 import dev.xkmc.l2library.base.BaseEntity;
 import dev.xkmc.l2library.serial.SerialClass;
-import dev.xkmc.lightland.content.magic.render.SpellComponent;
+import dev.xkmc.lightland.content.magic.client.render.SpellComponent;
 import dev.xkmc.lightland.content.magic.spell.internal.ActivationConfig;
 import dev.xkmc.lightland.content.magic.spell.internal.SpellConfig;
 import dev.xkmc.lightland.init.registrate.LightlandEntities;

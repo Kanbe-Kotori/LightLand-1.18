@@ -11,7 +11,7 @@ import dev.xkmc.l2library.recipe.BaseRecipe;
 import dev.xkmc.l2library.serial.SerialClass;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.ritual.AbstractRitualRecipe;
 import dev.xkmc.lightland.init.data.LangData;

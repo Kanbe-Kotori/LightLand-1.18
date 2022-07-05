@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import dev.xkmc.l2library.recipe.BaseRecipe;
 import dev.xkmc.l2library.serial.SerialClass;
 import dev.xkmc.lightland.content.magic.products.IMagicProduct;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProductType;
 import dev.xkmc.lightland.content.magic.products.info.DisplayInfo;
 import dev.xkmc.lightland.init.registrate.LightlandRecipe;

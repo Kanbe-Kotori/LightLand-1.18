@@ -2,7 +2,7 @@ package dev.xkmc.lightland.content.common.capability.player;
 
 import dev.xkmc.l2library.serial.NBTObj;
 import dev.xkmc.l2library.serial.SerialClass;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.products.MagicProductType;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;

@@ -10,7 +10,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.xkmc.lightland.content.arcane.internal.Arcane;
 import dev.xkmc.lightland.content.arcane.internal.ArcaneType;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.spell.internal.Spell;
 import dev.xkmc.lightland.content.profession.Profession;
 import dev.xkmc.lightland.content.skill.internal.Skill;

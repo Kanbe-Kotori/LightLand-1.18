@@ -1,4 +1,4 @@
-package dev.xkmc.lightland.content.magic.gui.hex;
+package dev.xkmc.lightland.content.magic.client.gui.hex;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

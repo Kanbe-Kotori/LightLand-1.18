@@ -1,4 +1,4 @@
-package dev.xkmc.lightland.content.magic.gui.tree;
+package dev.xkmc.lightland.content.magic.client.gui.tree;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;

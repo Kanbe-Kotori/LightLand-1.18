@@ -1,4 +1,4 @@
-package dev.xkmc.lightland.content.magic.gui.hex;
+package dev.xkmc.lightland.content.magic.client.gui.hex;
 
 import dev.xkmc.lightland.init.data.LangData;
 import net.minecraft.ChatFormatting;

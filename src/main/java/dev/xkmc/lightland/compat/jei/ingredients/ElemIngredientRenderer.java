@@ -2,7 +2,7 @@ package dev.xkmc.lightland.compat.jei.ingredients;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.lightland.content.common.capability.player.CapProxy;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
 import dev.xkmc.lightland.init.data.LangData;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;

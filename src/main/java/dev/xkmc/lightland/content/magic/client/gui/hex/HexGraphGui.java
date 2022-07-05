@@ -1,12 +1,12 @@
-package dev.xkmc.lightland.content.magic.gui.hex;
+package dev.xkmc.lightland.content.magic.client.gui.hex;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.l2library.magic.*;
 import dev.xkmc.l2library.menu.WindowBox;
 import dev.xkmc.l2library.util.Frac;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.init.data.LangData;
 import dev.xkmc.lightland.init.special.LightLandRegistry;
 import net.minecraft.client.Minecraft;

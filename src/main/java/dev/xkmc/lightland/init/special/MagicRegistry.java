@@ -3,7 +3,7 @@ package dev.xkmc.lightland.init.special;
 import dev.xkmc.l2library.repack.registrate.util.entry.RegistryEntry;
 import dev.xkmc.l2library.repack.registrate.util.nullness.NonNullSupplier;
 import dev.xkmc.lightland.content.arcane.internal.Arcane;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProductType;
 import dev.xkmc.lightland.content.magic.products.instance.*;
 import dev.xkmc.lightland.content.magic.spell.internal.Spell;

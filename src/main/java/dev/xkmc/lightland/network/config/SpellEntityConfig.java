@@ -2,7 +2,7 @@ package dev.xkmc.lightland.network.config;
 
 import dev.xkmc.l2library.network.BaseConfig;
 import dev.xkmc.l2library.serial.SerialClass;
-import dev.xkmc.lightland.content.magic.render.SpellComponent;
+import dev.xkmc.lightland.content.magic.client.render.SpellComponent;
 import dev.xkmc.lightland.network.NetworkManager;
 import net.minecraft.resources.ResourceLocation;
 

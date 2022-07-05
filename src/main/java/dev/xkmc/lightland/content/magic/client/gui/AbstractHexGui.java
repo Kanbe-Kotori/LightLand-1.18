@@ -1,8 +1,8 @@
-package dev.xkmc.lightland.content.magic.gui;
+package dev.xkmc.lightland.content.magic.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.client.Minecraft;

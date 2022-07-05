@@ -1,11 +1,11 @@
-package dev.xkmc.lightland.content.magic.gui.craft;
+package dev.xkmc.lightland.content.magic.client.gui.craft;
 
 import com.google.common.collect.Maps;
 import dev.xkmc.l2library.menu.BaseContainerMenu;
 import dev.xkmc.l2library.menu.SpriteManager;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
 import dev.xkmc.lightland.content.common.capability.player.MagicHolder;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.init.LightLand;
 import dev.xkmc.lightland.init.registrate.LightlandItems;

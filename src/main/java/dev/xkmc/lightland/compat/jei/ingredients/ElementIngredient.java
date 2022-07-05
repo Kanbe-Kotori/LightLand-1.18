@@ -1,6 +1,6 @@
 package dev.xkmc.lightland.compat.jei.ingredients;
 
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ package dev.xkmc.lightland.content.magic.products;
 import dev.xkmc.l2library.base.NamedEntry;
 import dev.xkmc.l2library.serial.NBTObj;
 import dev.xkmc.lightland.content.common.capability.player.LLPlayerData;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.info.TypeConfig;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.init.special.LightLandRegistry;

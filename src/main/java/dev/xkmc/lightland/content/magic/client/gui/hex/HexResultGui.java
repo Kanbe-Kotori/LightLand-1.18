@@ -1,11 +1,11 @@
-package dev.xkmc.lightland.content.magic.gui.hex;
+package dev.xkmc.lightland.content.magic.client.gui.hex;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.xkmc.l2library.menu.WindowBox;
-import dev.xkmc.lightland.content.magic.gui.AbstractHexGui;
-import dev.xkmc.lightland.content.magic.products.MagicElement;
+import dev.xkmc.lightland.content.magic.client.gui.AbstractHexGui;
+import dev.xkmc.lightland.content.magic.common.MagicElement;
 import dev.xkmc.lightland.content.magic.products.MagicProduct;
 import dev.xkmc.lightland.content.magic.products.recipe.IMagicRecipe;
 import dev.xkmc.lightland.init.data.LangData;

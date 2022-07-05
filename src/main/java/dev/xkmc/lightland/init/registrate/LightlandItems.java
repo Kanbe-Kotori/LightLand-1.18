@@ -25,7 +25,7 @@ import dev.xkmc.lightland.content.common.item.api.Mat;
 import dev.xkmc.lightland.content.common.item.misc.ContainerBook;
 import dev.xkmc.lightland.content.common.item.misc.RecordPearl;
 import dev.xkmc.lightland.content.common.item.misc.ScreenBook;
-import dev.xkmc.lightland.content.magic.gui.tree.MagicTreeScreen;
+import dev.xkmc.lightland.content.magic.client.gui.tree.MagicTreeScreen;
 import dev.xkmc.lightland.content.magic.item.MagicScroll;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
 import dev.xkmc.lightland.content.magic.item.ManaStorage;
