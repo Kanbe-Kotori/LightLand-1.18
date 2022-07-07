@@ -91,8 +91,8 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
     }
 
     private static float getScale(EntityCircle entity) {
-        if (entity.getRemainTime() < 10 && entity.getRemainTime() > 0) {
-            return entity.getRemainTime() / 10F;
+        if (entity.getRemainLife() < entity.getWithdrawTime() && entity.getRemainLife() >= 0) {
+            return 1F * entity.getRemainLife() / entity.getWithdrawTime();
         }
         if (entity.tickCount < entity.getDeployTime()) {
             return 1F * entity.tickCount / entity.getDeployTime();

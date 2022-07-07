@@ -109,11 +109,20 @@
 	  "target.enemy": "敌人",
 	  "weight": "重量: %s"
 	},
-	"misc": {
+	"oriental": {
+	  "wand_bonus": "法杖元素增益:",
+	  "wand_no_circle": "法杖当前未绑定魔法阵。",
 	  "circle_no_cd": "该魔法阵无使用冷却。",
-	  "total_cd": "该魔法阵总冷却: %stick",
-	  "cd_complete": "当前已冷却完成。",
-	  "cd_not_complete": "当前剩余冷却: %stick"
+	  "circle_total_cd": "该魔法阵总冷却: %stick，",
+	  "wand_no_cd": "法杖当前绑定的魔法阵无使用冷却。",
+	  "wand_total_cd": "法杖当前绑定的魔法阵总冷却: %stick，",
+	  "wand_circle_bonus": "魔法阵伤害倍数: %s。",
+	  "cd_complete": "已冷却完成。",
+	  "cd_not_complete": "剩余冷却: %stick。",
+	  "mode.standard": "普通的",
+	  "mode.speedup": "超速的",
+	  "mode.powerful": "强力的",
+	  "mode.efficient": "节能的"
 	}
   }
 }

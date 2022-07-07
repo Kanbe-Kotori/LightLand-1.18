@@ -15,4 +15,8 @@ public class OrientalElement {
     public static final OrientalElement FIRE = new OrientalElement("FIRE");
     public static final OrientalElement SUN = new OrientalElement("SUN");
     public static final OrientalElement MOON = new OrientalElement("MOON");
+
+    public String getName() {
+        return _name;
+    }
 }

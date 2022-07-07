@@ -26,6 +26,7 @@ import dev.xkmc.lightland.content.common.item.misc.ContainerBook;
 import dev.xkmc.lightland.content.common.item.misc.RecordPearl;
 import dev.xkmc.lightland.content.common.item.misc.ScreenBook;
 import dev.xkmc.lightland.content.magic.client.gui.tree.MagicTreeScreen;
+import dev.xkmc.lightland.content.magic.common.OrientalElement;
 import dev.xkmc.lightland.content.magic.item.MagicScroll;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
 import dev.xkmc.lightland.content.magic.item.ManaStorage;
@@ -200,7 +201,8 @@ public class LightlandItems {
 		ETHERNIUM_INGOT = simpleItem("ethernium_ingot");
 		ETHERNIUM_NUGGET = simpleItem("ethernium_nugget");
 
-		BASIC_WAND = REGISTRATE.item("basic_wand", p -> new OrientalWand(p)).defaultModel().defaultLang().register();
+		BASIC_WAND = REGISTRATE.item("basic_wand", p -> new OrientalWand(p).addBonus(OrientalElement.FIRE, 0.05F).addBonus(OrientalElement.EARTH, 0.05F).addBonus(OrientalElement.GOLD, 0.05F).addBonus(OrientalElement.WATER, 0.05F).addBonus(OrientalElement.MOON, 0.05F).addBonus(OrientalElement.SUN, 0.05F).addBonus(OrientalElement.WOOD, 0.05F))
+				.defaultModel().defaultLang().register();
 		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", p -> new RoughFireball(p)).defaultModel().defaultLang().register();
 	}
 

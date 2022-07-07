@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public abstract class ContinuousMagic extends MagicCircle {
+public abstract class ContinuousMagic extends AbstractCircleMagic {
 
     private final int standardStartupCost;
     private final int standardConCost;

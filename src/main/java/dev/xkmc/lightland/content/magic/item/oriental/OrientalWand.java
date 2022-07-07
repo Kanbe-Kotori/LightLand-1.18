@@ -5,11 +5,12 @@ import dev.xkmc.lightland.content.magic.common.OrientalElement;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.ContinuousMagic;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.DelayedMagic;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.InstantMagic;
-import dev.xkmc.lightland.content.magic.item.oriental.circle.MagicCircle;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,13 +20,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OrientalWand extends Item {
 
-    public HashMap<OrientalElement, Float> elemental_buffs = new HashMap();
+    public HashMap<OrientalElement, Float> defaultElementalBonus = new HashMap();
 
     private static final String TAG_CIRCLE = "circle";
 
@@ -33,9 +38,22 @@ public class OrientalWand extends Item {
         super(props);
     }
 
-    public OrientalWand addBuff(OrientalElement element, float buff) {
-        elemental_buffs.put(element, buff);
+    public OrientalWand addBonus(OrientalElement element, float value) {
+        defaultElementalBonus.put(element, value);
         return this;
+    }
+
+    public static HashMap<OrientalElement, Float> getTotalElementalBonus(ItemStack stack) {
+        if (stack.getItem() instanceof OrientalWand wand) {
+            //TODO 法杖强化
+            return wand.defaultElementalBonus;
+        }
+        return new HashMap();
+    }
+
+    public static float calcMagicModifier(ItemStack stack, AbstractCircleMagic magic) {
+        double total = magic.elements.keySet().stream().mapToDouble(e->1D * magic.elements.get(e) * getTotalElementalBonus(stack).getOrDefault(e, 0F)).sum();
+        return Math.max(1 + (float)total, 0);
     }
 
     public static void setCircle(ItemStack stack, ItemStack core) {
@@ -59,7 +77,7 @@ public class OrientalWand extends Item {
     public static int getCircleCD(ItemStack stack) {
         ItemStack circle = getCircle(stack);
         if (!circle.isEmpty())
-            return MagicCircle.getCD(circle);
+            return AbstractCircleMagic.getCD(circle);
         else
             return 0;
     }
@@ -67,19 +85,19 @@ public class OrientalWand extends Item {
     public static void setCircleFullCD(ItemStack stack) {
         ItemStack circle = getCircle(stack);
         if (!circle.isEmpty())
-            MagicCircle.setFullCD(circle);
+            AbstractCircleMagic.setFullCD(circle);
     }
 
     public static void tickCircle(ItemStack stack) {
         ItemStack circle = getCircle(stack);
         if (!circle.isEmpty())
-            MagicCircle.tickCD(circle);
+            AbstractCircleMagic.tickCD(circle);
     }
 
     public static int getMaxCircleCD(ItemStack stack) {
         ItemStack circle = getCircle(stack);
         if (!circle.isEmpty())
-            return MagicCircle.getMaxCD(circle);
+            return AbstractCircleMagic.getMaxCD(circle);
         else
             return 0;
     }
@@ -109,19 +127,6 @@ public class OrientalWand extends Item {
             return 0;
         float f = Math.max(0.0F, 1.0F * (getMaxCircleCD(stack) - getCircleCD(stack)) / getMaxCircleCD(stack));
         return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public Component getName(ItemStack stack) {
-        if (hasCircle(stack)) {
-            MutableComponent component = super.getName(stack).plainCopy();
-            component.append("(");
-            component.append(getCircle(stack).getDisplayName().plainCopy().withStyle(ChatFormatting.GREEN));
-            component.append(")");
-            return component;
-        } else {
-            return super.getName(stack);
-        }
     }
 
     @Override
@@ -191,6 +196,53 @@ public class OrientalWand extends Item {
             return InteractionResultHolder.pass(stack);
         }
         else return InteractionResultHolder.pass(stack);
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        if (hasCircle(stack)) {
+            MutableComponent component = super.getName(stack).plainCopy();
+            component.append("(");
+            component.append(getCircle(stack).getDisplayName().plainCopy().withStyle(ChatFormatting.GREEN));
+            component.append(")");
+            return component;
+        } else {
+            return super.getName(stack);
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flags) {
+        MutableComponent elemental_bonus = new TranslatableComponent("lightland.oriental.wand_bonus");
+        for (Map.Entry<OrientalElement, Float> entry : getTotalElementalBonus(stack).entrySet()) {
+            float value = entry.getValue();
+            String valueStr = " " + entry.getKey().getName() + (value >= 0? "+" : "") + String.format("%.1f", 100 * value) + "%";
+            elemental_bonus.append(valueStr);
+        }
+        list.add(elemental_bonus);
+
+        if (!hasCircle(stack)) {
+            Component no_circle = new TranslatableComponent("lightland.oriental.wand_no_circle");
+            list.add(no_circle);
+            return;
+        }
+
+        if (getMaxCircleCD(stack) == 0) {
+            Component no_cd = new TranslatableComponent("lightland.oriental.wand_no_cd");
+            list.add(no_cd);
+        } else {
+            MutableComponent total_cd = new TranslatableComponent("lightland.oriental.wand_total_cd", getMaxCircleCD(stack));
+            Component cd_info;
+            if (getCircleCD(stack) > 0)
+                cd_info = new TranslatableComponent("lightland.oriental.cd_not_complete", getCircleCD(stack)).withStyle(ChatFormatting.RED);
+            else
+                cd_info = new TranslatableComponent("lightland.oriental.cd_complete").withStyle(ChatFormatting.GREEN);
+            total_cd.append(cd_info);
+            list.add(total_cd);
+        }
+
+        Component bonus_info = new TranslatableComponent("lightland.oriental.wand_circle_bonus", calcMagicModifier(stack, (AbstractCircleMagic) getCircle(stack).getItem()));
+        list.add(bonus_info);
     }
 
 }

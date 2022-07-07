@@ -1,7 +1,7 @@
 package dev.xkmc.lightland.content.magic.item.oriental.crafting;
 
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
-import dev.xkmc.lightland.content.magic.item.oriental.circle.MagicCircle;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ public class WandCircleRecipe extends CustomRecipe {
                         return false;
                     else
                         foundWand = true;
-                } else if (stack.getItem() instanceof MagicCircle) {
+                } else if (stack.getItem() instanceof AbstractCircleMagic) {
                     if (foundCircle)
                         return false;
                     else
@@ -53,7 +53,7 @@ public class WandCircleRecipe extends CustomRecipe {
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof OrientalWand) {
                     wand = stack;
-                } else if (stack.getItem() instanceof MagicCircle) {
+                } else if (stack.getItem() instanceof AbstractCircleMagic) {
                     circle = stack;
                 }
             }

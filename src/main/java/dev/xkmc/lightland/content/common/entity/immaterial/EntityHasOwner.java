@@ -19,9 +19,11 @@ import java.util.UUID;
 
 public abstract class EntityHasOwner extends Entity implements OwnableEntity {
 
+    protected static String TAG_OWNER_UUID = "OwnerUUID";
     protected static final EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHasOwner.class, EntityDataSerializers.OPTIONAL_UUID);
-    protected static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(EntityHasOwner.class, EntityDataSerializers.INT);
 
+    protected static String TAG_LIFE_REMAIN = "lifeRemain";
+    protected int lifeRemain = -1;
 
     public EntityHasOwner(EntityType<?> type, Level level) {
         super(type, level);
@@ -30,45 +32,50 @@ public abstract class EntityHasOwner extends Entity implements OwnableEntity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(OWNER_UNIQUE_ID, Optional.empty());
-        this.entityData.define(LIFE, -1);
     }
 
     public void setLife(int life) {
-        this.entityData.set(LIFE, life);
+        this.lifeRemain = life;
     }
 
-    public int getLife() {
-        return this.entityData.get(LIFE);
+    public int getRemainLife() {
+        return lifeRemain;
     }
 
     @Override
     public void tick() {
         super.tick();
-        int life = this.entityData.get(LIFE);
-        if (life > 0 && tickCount > life) {
-            this.kill();
-            return;
+        if (lifeRemain > 0) {
+            lifeRemain--;
+        } else if (lifeRemain == 0) {
+            if (!level.isClientSide) {
+                this.kill();
+                return;
+            }
         }
+
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
-        String s = "";
-        if (nbt.contains("OwnerUUID", Tag.TAG_STRING)) {
-            s = nbt.getString("OwnerUUID");
+        if (nbt.contains(TAG_OWNER_UUID, Tag.TAG_STRING)) {
+            String uuid = nbt.getString(TAG_OWNER_UUID);
+            if (!uuid.equals(""))
+                this.setOwnerId(UUID.fromString(uuid));
         }
-        if (!s.equals("")) {
-            this.setOwnerId(UUID.fromString(s));
+        if (nbt.contains(TAG_LIFE_REMAIN, Tag.TAG_INT)) {
+            this.lifeRemain = nbt.getInt(TAG_LIFE_REMAIN);
         }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
         if (this.getOwnerUUID() == null) {
-            nbt.putString("OwnerUUID", "");
+            nbt.putString(TAG_OWNER_UUID, "");
         } else {
-            nbt.putString("OwnerUUID", this.getOwnerUUID().toString());
+            nbt.putString(TAG_OWNER_UUID, this.getOwnerUUID().toString());
         }
+        nbt.putInt(TAG_LIFE_REMAIN, this.lifeRemain);
     }
 
     @Override

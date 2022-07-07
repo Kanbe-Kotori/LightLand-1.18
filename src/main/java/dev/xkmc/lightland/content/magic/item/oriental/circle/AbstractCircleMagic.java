@@ -3,6 +3,8 @@ package dev.xkmc.lightland.content.magic.item.oriental.circle;
 import dev.xkmc.lightland.content.magic.common.OrientalElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -19,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class MagicCircle extends Item {
+public abstract class AbstractCircleMagic extends Item {
 
     public enum CircleMode {
         STANDARD,
@@ -35,9 +37,27 @@ public abstract class MagicCircle extends Item {
     private static final String TAG_CD = "cd";
     private static final String TAG_MODE = "mode";
 
-    public MagicCircle(Properties props, int cd) {
+    public AbstractCircleMagic(Properties props, int cd) {
         super(props.stacksTo(1));
         this.standardCD = cd;
+    }
+
+    public AbstractCircleMagic addElement(OrientalElement element, float scale) {
+        elements.put(element, scale);
+        return this;
+    }
+
+    public static CircleMode getMode(ItemStack stack) {
+        if (stack.getOrCreateTag().contains(TAG_MODE)) {
+            return CircleMode.valueOf(stack.getOrCreateTag().getString(TAG_MODE));
+        } else {
+            setMode(stack, CircleMode.STANDARD);
+            return CircleMode.STANDARD;
+        }
+    }
+
+    public static void setMode(ItemStack stack, CircleMode mode) {
+        stack.getOrCreateTag().putString(TAG_MODE, mode.name());
     }
 
     public static int getCD(ItemStack stack) {
@@ -58,7 +78,7 @@ public abstract class MagicCircle extends Item {
     }
 
     public static int getMaxCD(ItemStack stack) {
-        if (stack.getItem() instanceof MagicCircle circle) {
+        if (stack.getItem() instanceof AbstractCircleMagic circle) {
             switch (getMode(stack)) {
                 case SPEEDUP: return (int) (circle.standardCD * 0.75F);
                 case EFFICIENT: return (int) (circle.standardCD * 1.5F);
@@ -67,29 +87,6 @@ public abstract class MagicCircle extends Item {
                 default: return 0;
             }
         } else return 0;
-    }
-
-    public static CircleMode getMode(ItemStack stack) {
-        if (stack.getOrCreateTag().contains(TAG_MODE)) {
-            return CircleMode.valueOf(stack.getOrCreateTag().getString(TAG_MODE));
-        } else {
-            setMode(stack, CircleMode.STANDARD);
-            return CircleMode.STANDARD;
-        }
-    }
-
-    public static void setMode(ItemStack stack, CircleMode mode) {
-        stack.getOrCreateTag().putString(TAG_MODE, mode.name());
-    }
-
-    public MagicCircle addElement(OrientalElement element, float scale) {
-        elements.put(element, scale);
-        return this;
-    }
-
-    public float calcTotalBuff(HashMap<OrientalElement, Float> buffs) {
-        float total = (float) elements.keySet().stream().mapToDouble(e->elements.get(e)*buffs.getOrDefault(e,0F)).sum();
-        return Math.max(total + 1, 0);
     }
 
     public static float getDamageModifier(ItemStack stack) {
@@ -137,20 +134,35 @@ public abstract class MagicCircle extends Item {
     }
 
     @Override
+    public Component getName(ItemStack stack) {
+        if (getMode(stack) == CircleMode.STANDARD)
+            return super.getName(stack);
+
+        String mode = "lightland.circle.mode." + getMode(stack).name().toLowerCase();
+        Component modeText = new TranslatableComponent(mode);
+        MutableComponent component = new TextComponent("");
+        component.append("[");
+        component.append(modeText);
+        component.append("]");
+        component.append(super.getName(stack));
+        return component;
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flags) {
         if (getMaxCD(stack) == 0) {
-            Component no_cd = new TranslatableComponent("lightland.misc.circle_no_cd");
+            Component no_cd = new TranslatableComponent("lightland.oriental.circle_no_cd");
             list.add(no_cd);
-            return;
+        } else {
+            MutableComponent total_cd = new TranslatableComponent("lightland.oriental.circle_total_cd", getMaxCD(stack));
+            Component cd_info;
+            if (getCD(stack) > 0)
+                cd_info = new TranslatableComponent("lightland.oriental.cd_not_complete", getCD(stack)).withStyle(ChatFormatting.RED);
+            else
+                cd_info = new TranslatableComponent("lightland.oriental.cd_complete").withStyle(ChatFormatting.GREEN);
+            total_cd.append(cd_info);
+            list.add(total_cd);
         }
-        Component total_cd = new TranslatableComponent("lightland.misc.total_cd", getMaxCD(stack));
-        Component cd_info;
-        if (getCD(stack) > 0)
-            cd_info = new TranslatableComponent("lightland.misc.cd_not_complete", getCD(stack)).withStyle(ChatFormatting.RED);
-        else
-            cd_info = new TranslatableComponent("lightland.misc.cd_complete").withStyle(ChatFormatting.GREEN);
-        list.add(total_cd);
-        list.add(cd_info);
     }
 
 }

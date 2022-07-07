@@ -1,9 +1,6 @@
 package dev.xkmc.lightland.content.common.entity.immaterial;
 
 import dev.xkmc.lightland.init.registrate.LightlandEntities;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityCircle extends EntityHasOwner {
 
-    private static final EntityDataAccessor<Integer> DEPLOY_TIME = SynchedEntityData.defineId(EntityCircle.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> LIFE_REMAIN = SynchedEntityData.defineId(EntityCircle.class, EntityDataSerializers.INT);
+    protected int deployTime = 10;
+    protected int withdrawTime = 10;
 
     public EntityCircle(EntityType<?> type, Level level) {
         super(type, level);
@@ -23,6 +20,8 @@ public class EntityCircle extends EntityHasOwner {
     public static EntityCircle create(Level level, Player player, int deploy, int life) {
         EntityCircle circle = new EntityCircle(LightlandEntities.CIRCLE.get(), level);
         circle.setOwner(player);
+        circle.deployTime = deploy;
+        circle.lifeRemain = life < 0 ? -1 : life + circle.withdrawTime;
 
         circle.setPos(player.position());
         Vec3 look = player.getLookAngle();
@@ -32,9 +31,6 @@ public class EntityCircle extends EntityHasOwner {
         circle.setXRot(yaw);
         circle.setYRot(pitch);
 
-        circle.entityData.set(DEPLOY_TIME, deploy);
-        circle.entityData.set(LIFE_REMAIN, life);
-
         return circle;
     }
 
@@ -42,52 +38,41 @@ public class EntityCircle extends EntityHasOwner {
         return create(level, player, 10, -1);
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DEPLOY_TIME, 10);
-        this.entityData.define(LIFE_REMAIN, -1);
-    }
-
     public int getDeployTime() {
-        return this.entityData.get(DEPLOY_TIME);
+        return this.deployTime;
     }
 
-    public int getRemainTime() {
-        return this.entityData.get(LIFE_REMAIN);
+    public int getWithdrawTime() {
+        return this.withdrawTime;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.entityData.get(LIFE_REMAIN) > 0) {
-            this.entityData.set(LIFE_REMAIN, this.entityData.get(LIFE_REMAIN)-1);
-        } else if (this.entityData.get(LIFE_REMAIN) == 0) {
-            this.kill();
-            return;
-        }
 
         Entity owner = this.getOwner();
         if (this.getOwner() == null) {
-            this.preKill();
+            this.withdraw();
             return;
         }
         this.setPos(owner.position());
         this.calcRotation();
         if (owner instanceof Player player) {
             if (!player.isUsingItem()) {
-                this.preKill();
+                this.withdraw();
                 return;
             }
         } else {
-            this.preKill();
+            this.withdraw();
             return;
         }
     }
 
-    public void preKill() {
-        if (this.entityData.get(LIFE_REMAIN) > 10 || this.entityData.get(LIFE_REMAIN) < 0)
-            this.entityData.set(LIFE_REMAIN, 10);
+    public void withdraw() {
+        if (this.lifeRemain < 0)
+            this.lifeRemain = this.withdrawTime;
+        else
+            this.lifeRemain = Math.min(this.lifeRemain, this.withdrawTime);
     }
 
     protected void calcRotation() {

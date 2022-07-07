@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public abstract class InstantMagic extends MagicCircle {
+public abstract class InstantMagic extends AbstractCircleMagic {
 
     private final int standardCost;
 

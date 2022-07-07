@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public abstract class DelayedMagic extends MagicCircle {
+public abstract class DelayedMagic extends AbstractCircleMagic {
 
     private final int standardCost;
     private final int standardDelay;
@@ -36,7 +36,7 @@ public abstract class DelayedMagic extends MagicCircle {
             switch (getMode(stack)) {
                 case SPEEDUP: return (int) (circle.standardDelay * 0.75F);
                 case EFFICIENT: return (int) (circle.standardDelay * 1.5F);
-                case STANDARD: return 20;
+                case STANDARD:
                 case POWERFUL: return circle.standardDelay;
                 default: return 0;
             }
