@@ -120,7 +120,7 @@ class ImmaterialRenderType extends RenderType {
 
     public static RenderType triangleStrip() {
         return RenderType.create(
-                "spell_blend_notex",
+                "triangle_strip",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.TRIANGLE_STRIP,
                 1024, true, true,
@@ -136,7 +136,7 @@ class ImmaterialRenderType extends RenderType {
 
     public static RenderType triangleFan() {
         return RenderType.create(
-                "spell_blend_notex",
+                "triangle_fan",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.TRIANGLE_FAN,
                 1024, true, true,
@@ -152,7 +152,7 @@ class ImmaterialRenderType extends RenderType {
 
     public static RenderType quads() {
         return RenderType.create(
-                "spell_blend_notex",
+                "quads",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.QUADS,
                 256, true, true,
@@ -168,7 +168,7 @@ class ImmaterialRenderType extends RenderType {
 
     public static RenderType lineStrip(double width) {
         return RenderType.create(
-                "spell_blend_notex",
+                "line_strip",
                 DefaultVertexFormat.POSITION_COLOR,
                 VertexFormat.Mode.LINE_STRIP,
                 1024, true, true,

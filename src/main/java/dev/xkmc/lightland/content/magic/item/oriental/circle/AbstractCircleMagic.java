@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractCircleMagic extends Item {
 
@@ -138,7 +139,7 @@ public abstract class AbstractCircleMagic extends Item {
         if (getMode(stack) == CircleMode.STANDARD)
             return super.getName(stack);
 
-        String mode = "lightland.circle.mode." + getMode(stack).name().toLowerCase();
+        String mode = "lightland.oriental.mode." + getMode(stack).name().toLowerCase();
         Component modeText = new TranslatableComponent(mode);
         MutableComponent component = new TextComponent("");
         component.append("[");
@@ -150,6 +151,14 @@ public abstract class AbstractCircleMagic extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flags) {
+        MutableComponent elemental_type = new TranslatableComponent("lightland.oriental.circle_type");
+        for (Map.Entry<OrientalElement, Float> entry : ((AbstractCircleMagic)stack.getItem()).elements.entrySet()) {
+            float value = entry.getValue();
+            String valueStr = " " + entry.getKey().getName() + (value >= 0? "+" : "") + String.format("%.1f", 100 * value) + "%";
+            elemental_type.append(valueStr);
+        }
+        list.add(elemental_type);
+
         if (getMaxCD(stack) == 0) {
             Component no_cd = new TranslatableComponent("lightland.oriental.circle_no_cd");
             list.add(no_cd);

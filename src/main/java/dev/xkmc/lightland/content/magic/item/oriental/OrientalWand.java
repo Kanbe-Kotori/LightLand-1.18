@@ -180,6 +180,7 @@ public class OrientalWand extends Item {
             InteractionResultHolder<ItemStack> result = con.wandUse(level, player, hand);
             if (result.getResult() != InteractionResult.PASS) {
                 EntityCircle circle = EntityCircle.create(level, player);
+                circle.setDeployTime(AbstractCircleMagic.getMode(circleStack));
                 level.addFreshEntity(circle);
                 player.startUsingItem(hand);
                 return InteractionResultHolder.consume(stack);
@@ -189,6 +190,7 @@ public class OrientalWand extends Item {
             InteractionResultHolder<ItemStack> result = delay.wandUse(level, player, hand);
             if (result.getResult() != InteractionResult.PASS) {
                 EntityCircle circle = EntityCircle.create(level, player);
+                circle.setDeployTime(AbstractCircleMagic.getMode(circleStack));
                 level.addFreshEntity(circle);
                 player.startUsingItem(hand);
                 return InteractionResultHolder.consume(stack);

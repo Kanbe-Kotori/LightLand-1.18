@@ -112,6 +112,7 @@
 	"oriental": {
 	  "wand_bonus": "法杖元素增益:",
 	  "wand_no_circle": "法杖当前未绑定魔法阵。",
+	  "circle_type": "魔法阵元素类型:",
 	  "circle_no_cd": "该魔法阵无使用冷却。",
 	  "circle_total_cd": "该魔法阵总冷却: %stick，",
 	  "wand_no_cd": "法杖当前绑定的魔法阵无使用冷却。",

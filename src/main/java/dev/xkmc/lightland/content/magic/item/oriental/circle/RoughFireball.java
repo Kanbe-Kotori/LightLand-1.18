@@ -34,7 +34,7 @@ public class RoughFireball extends DelayedMagic {
         float modifier = OrientalWand.calcMagicModifier(stack, this);
 
         EntityRoughFireball ball = EntityRoughFireball.create(level, player, modifier);
-        ball.setMode(AbstractCircleMagic.getMode(stack));
+        ball.setMode(AbstractCircleMagic.getMode(OrientalWand.getCircle(stack)));
         ball.setPos(shootPos);
         ball.shoot(xAxis.x,xAxis.y,xAxis.z,0,0);
         level.addFreshEntity(ball);

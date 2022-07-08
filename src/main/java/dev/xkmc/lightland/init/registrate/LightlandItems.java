@@ -31,7 +31,9 @@ import dev.xkmc.lightland.content.magic.item.MagicScroll;
 import dev.xkmc.lightland.content.magic.item.MagicWand;
 import dev.xkmc.lightland.content.magic.item.ManaStorage;
 import dev.xkmc.lightland.content.magic.item.PotionCore;
+import dev.xkmc.lightland.content.magic.item.oriental.ModeUpgrade;
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.RoughFireball;
 import dev.xkmc.lightland.content.questline.item.DispellWaterBottle;
 import dev.xkmc.lightland.content.questline.item.SlimeTentacleItem;
@@ -163,6 +165,10 @@ public class LightlandItems {
 	public static final ItemEntry<OrientalWand> BASIC_WAND;
 	public static final ItemEntry<RoughFireball> ROUGH_FIREBALL;
 
+	public static final ItemEntry<ModeUpgrade> MODE_SPEEDUP;
+	public static final ItemEntry<ModeUpgrade> MODE_POWERFUL;
+	public static final ItemEntry<ModeUpgrade> MODE_EFFICIENT;
+
 	static {
 		ARCANE_SWORD_GILDED = REGISTRATE.item("gilded_arcane_sword", p ->
 						new ArcaneSword(Tiers.IRON, 5, -2.4f, p.stacksTo(1).setNoRepair(), 50))
@@ -203,7 +209,15 @@ public class LightlandItems {
 
 		BASIC_WAND = REGISTRATE.item("basic_wand", p -> new OrientalWand(p).addBonus(OrientalElement.FIRE, 0.05F).addBonus(OrientalElement.EARTH, 0.05F).addBonus(OrientalElement.GOLD, 0.05F).addBonus(OrientalElement.WATER, 0.05F).addBonus(OrientalElement.MOON, 0.05F).addBonus(OrientalElement.SUN, 0.05F).addBonus(OrientalElement.WOOD, 0.05F))
 				.defaultModel().defaultLang().register();
-		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", p -> new RoughFireball(p)).defaultModel().defaultLang().register();
+		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", RoughFireball::new)
+				.defaultModel().defaultLang().register();
+
+		MODE_SPEEDUP = 	REGISTRATE.item("mode_speedup", p -> new ModeUpgrade(p, AbstractCircleMagic.CircleMode.SPEEDUP))
+				.defaultModel().defaultLang().register();
+		MODE_POWERFUL = REGISTRATE.item("mode_powerful", p -> new ModeUpgrade(p, AbstractCircleMagic.CircleMode.POWERFUL))
+				.defaultModel().defaultLang().register();
+		MODE_EFFICIENT = REGISTRATE.item("mode_efficient", p -> new ModeUpgrade(p, AbstractCircleMagic.CircleMode.EFFICIENT))
+				.defaultModel().defaultLang().register();
 	}
 
 	// -------- questline--------

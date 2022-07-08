@@ -5,6 +5,7 @@ import dev.xkmc.l2library.recipe.BaseRecipe;
 import dev.xkmc.l2library.repack.registrate.util.entry.RegistryEntry;
 import dev.xkmc.lightland.content.berserker.recipe.MedArmorRecipe;
 import dev.xkmc.lightland.content.magic.block.RitualCore;
+import dev.xkmc.lightland.content.magic.item.oriental.crafting.CircleUpgrade;
 import dev.xkmc.lightland.content.magic.item.oriental.crafting.WandCircleRecipe;
 import dev.xkmc.lightland.content.magic.item.oriental.crafting.WandRemoveCircleRecipe;
 import dev.xkmc.lightland.content.magic.products.recipe.DefMagicRecipe;
@@ -49,8 +50,9 @@ public class LightlandRecipe {
 			REGISTRATE.simple("magic_default", RecipeSerializer.class, () -> new BaseRecipe.RecType<>(DefMagicRecipe.class, RT_MAGIC));
 
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, LightLand.MODID);
-	public static final RegistryObject<RecipeSerializer<WandCircleRecipe>> RS_WAND_CORE = RECIPE.register("wand_circle", () -> WandCircleRecipe.SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<WandRemoveCircleRecipe>> RS_WAND_REMOVE_CORE = RECIPE.register("wand_remove_circle", () -> WandRemoveCircleRecipe.SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<WandCircleRecipe>> RS_WAND_CIRCLE = RECIPE.register("wand_circle", () -> WandCircleRecipe.SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<WandRemoveCircleRecipe>> RS_WAND_REMOVE_CIRCLE = RECIPE.register("wand_remove_circle", () -> WandRemoveCircleRecipe.SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<CircleUpgrade>> RS_CIRCLE_UPGRADE = RECIPE.register("circle_upgrade", () -> CircleUpgrade.SERIALIZER);
 
 	public static void register(IEventBus bus) {
 		RECIPE_TYPES.register(bus);

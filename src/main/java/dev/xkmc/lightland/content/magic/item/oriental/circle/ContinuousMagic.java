@@ -43,7 +43,10 @@ public abstract class ContinuousMagic extends AbstractCircleMagic {
     }
 
     @Override
-    public abstract InteractionResultHolder<ItemStack> wandUse(Level level, Player player, InteractionHand hand);
+    public InteractionResultHolder<ItemStack> wandUse(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        return InteractionResultHolder.consume(stack);
+    }
 
     @Override
     public abstract void wandUseTick(Level level, LivingEntity entity, ItemStack stack, int tick);

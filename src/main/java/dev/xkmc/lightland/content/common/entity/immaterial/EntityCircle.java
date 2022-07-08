@@ -1,6 +1,10 @@
 package dev.xkmc.lightland.content.common.entity.immaterial;
 
+import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
 import dev.xkmc.lightland.init.registrate.LightlandEntities;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -10,17 +14,24 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityCircle extends EntityHasOwner {
 
-    protected int deployTime = 10;
+    protected static final EntityDataAccessor<Integer> DEPLOY_TIME = SynchedEntityData.defineId(EntityRoughFireball.class, EntityDataSerializers.INT);
+
     protected int withdrawTime = 10;
 
     public EntityCircle(EntityType<?> type, Level level) {
         super(type, level);
     }
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DEPLOY_TIME, 10);
+    }
+
     public static EntityCircle create(Level level, Player player, int deploy, int life) {
         EntityCircle circle = new EntityCircle(LightlandEntities.CIRCLE.get(), level);
         circle.setOwner(player);
-        circle.deployTime = deploy;
+        circle.setDeployTime(deploy);
         circle.lifeRemain = life < 0 ? -1 : life + circle.withdrawTime;
 
         circle.setPos(player.position());
@@ -39,7 +50,18 @@ public class EntityCircle extends EntityHasOwner {
     }
 
     public int getDeployTime() {
-        return this.deployTime;
+        return this.entityData.get(DEPLOY_TIME);
+    }
+
+    public void setDeployTime(int time) {
+        this.entityData.set(DEPLOY_TIME, time);
+    }
+
+    public void setDeployTime(AbstractCircleMagic.CircleMode mode) {
+        switch (mode) {
+            case SPEEDUP -> setDeployTime((int) (getDeployTime() * 0.75F));
+            case EFFICIENT -> setDeployTime((int) (getDeployTime() * 1.5F));
+        }
     }
 
     public int getWithdrawTime() {
