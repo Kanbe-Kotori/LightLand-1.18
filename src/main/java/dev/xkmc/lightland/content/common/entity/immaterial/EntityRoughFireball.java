@@ -31,7 +31,7 @@ public class EntityRoughFireball extends EntityFlying implements IModedEntity {
     public static EntityRoughFireball create(Level level, Player player, float damageModifier) {
         EntityRoughFireball fireball = new EntityRoughFireball(LightlandEntities.ROUGH_FIREBALL.get(), level);
         fireball.setOwner(player);
-        fireball.lifeRemain = fireball.chargeTime + fireball.lifeAfterShoot;
+        fireball.setMaxLife(fireball.chargeTime + fireball.lifeAfterShoot);
         fireball.damage *= damageModifier;
         return fireball;
     }

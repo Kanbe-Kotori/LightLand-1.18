@@ -138,10 +138,12 @@ public class OrientalWand extends Item {
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int tick) {
         if (level.isClientSide)
             return;
-        if (getCircle(stack) != null && getCircle(stack).getItem() instanceof ContinuousMagic con) {
-            con.wandUseTick(level, entity, stack, tick);
-        } else if (getCircle(stack) != null && getCircle(stack).getItem() instanceof DelayedMagic delay) {
-            delay.wandUseTick(level, entity, stack, tick);
+        if (entity instanceof Player player) {
+            if (getCircle(stack) != null && getCircle(stack).getItem() instanceof ContinuousMagic con) {
+                con.wandUseTick(level, player, stack, tick);
+            } else if (getCircle(stack) != null && getCircle(stack).getItem() instanceof DelayedMagic delay) {
+                delay.wandUseTick(level, player, stack, tick);
+            }
         }
     }
 
@@ -149,8 +151,10 @@ public class OrientalWand extends Item {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick) {
         if (level.isClientSide)
             return;
-        if (getCircle(stack) != null && getCircle(stack).getItem() instanceof DelayedMagic delay) {
-            delay.releaseUsing(stack, level, entity, tick);
+        if (entity instanceof Player player) {
+            if (getCircle(stack) != null && getCircle(stack).getItem() instanceof DelayedMagic delay) {
+                delay.wandReleaseUsing(stack, level, player, tick);
+            }
         }
     }
 

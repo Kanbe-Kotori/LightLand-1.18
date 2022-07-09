@@ -82,6 +82,25 @@ public class RenderHelper {
         vc.vertex(m, x, y1 + wdy, z1 + wdz).color(color1).endVertex();
     }
 
+    public static void line2d(MultiBufferSource buffer, Matrix4f m, float x, float y1, float z1, float y2, float z2, float width, int color) {
+        line2d(buffer, m, x, y1, z1, y2, z2, width, color, color);
+    }
+
+        public static void rune2d(MultiBufferSource buffer, Matrix4f m, CircleRune rune, float x, float y, float z, float size, int color) {
+        VertexConsumer vc = buffer.getBuffer(ImmaterialRenderType.quads());
+        int[][] runeColor = rune.getBitmap(color);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                float y1 = y + (i - 3) * size;
+                float z1 = z + (j - 4) * size;
+                vc.vertex(m, x, y1, z1).color(runeColor[i][j]).endVertex();
+                vc.vertex(m, x, y1, z1 + size).color(runeColor[i][j]).endVertex();
+                vc.vertex(m, x, y1 + size, z1 + size).color(runeColor[i][j]).endVertex();
+                vc.vertex(m, x, y1 + size, z1).color(runeColor[i][j]).endVertex();
+            }
+        }
+    }
+
     public static int getRainbowColor(double angle) {
         int a = 0x7F;
         int r = 0, g = 0, b = 0;
@@ -127,7 +146,7 @@ class ImmaterialRenderType extends RenderType {
                 RenderType.CompositeState.builder()
                         .setTextureState(NO_TEXTURE)
                         .setShaderState(POSITION_COLOR_SHADER)
-                        .setDepthTestState(NO_DEPTH_TEST)
+                        //.setDepthTestState(NO_DEPTH_TEST)
                         .setCullState(NO_CULL)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .createCompositeState(false)
@@ -143,7 +162,7 @@ class ImmaterialRenderType extends RenderType {
                 RenderType.CompositeState.builder()
                         .setTextureState(NO_TEXTURE)
                         .setShaderState(POSITION_COLOR_SHADER)
-                        .setDepthTestState(NO_DEPTH_TEST)
+                        //.setDepthTestState(NO_DEPTH_TEST)
                         .setCullState(NO_CULL)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .createCompositeState(false)
@@ -159,7 +178,7 @@ class ImmaterialRenderType extends RenderType {
                 RenderType.CompositeState.builder()
                         .setTextureState(NO_TEXTURE)
                         .setShaderState(POSITION_COLOR_SHADER)
-                        .setDepthTestState(NO_DEPTH_TEST)
+                        //.setDepthTestState(NO_DEPTH_TEST)
                         .setCullState(NO_CULL)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .createCompositeState(false)
@@ -176,7 +195,7 @@ class ImmaterialRenderType extends RenderType {
                         .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(width)))
                         .setTextureState(NO_TEXTURE)
                         .setShaderState(RENDERTYPE_LINES_SHADER)
-                        .setDepthTestState(NO_DEPTH_TEST)
+                        //.setDepthTestState(NO_DEPTH_TEST)
                         .setCullState(NO_CULL)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .setLayeringState(VIEW_OFFSET_Z_LAYERING)

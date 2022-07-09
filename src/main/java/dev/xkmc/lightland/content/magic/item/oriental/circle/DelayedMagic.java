@@ -3,7 +3,6 @@ package dev.xkmc.lightland.content.magic.item.oriental.circle;
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -50,15 +49,15 @@ public abstract class DelayedMagic extends AbstractCircleMagic {
     }
 
     @Override
-    public void wandUseTick(Level level, LivingEntity entity, ItemStack stack, int tick) {
+    public void wandUseTick(Level level, Player player, ItemStack stack, int tick) {
         int useTick = stack.getUseDuration() - tick;
         if (useTick > getDelay(OrientalWand.getCircle(stack))) {
-            entity.stopUsingItem();
+            player.stopUsingItem();
             OrientalWand.setCircleFullCD(stack);
         }
     }
 
     @Override
-    public abstract void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick);
+    public abstract void wandReleaseUsing(ItemStack stack, Level level, Player player, int tick);
 
 }

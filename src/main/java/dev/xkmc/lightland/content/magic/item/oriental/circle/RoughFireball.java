@@ -5,7 +5,6 @@ import dev.xkmc.lightland.content.magic.common.OrientalElement;
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -43,7 +42,7 @@ public class RoughFireball extends DelayedMagic {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick) {
+    public void wandReleaseUsing(ItemStack stack, Level level, Player player, int tick) {
 
     }
 }

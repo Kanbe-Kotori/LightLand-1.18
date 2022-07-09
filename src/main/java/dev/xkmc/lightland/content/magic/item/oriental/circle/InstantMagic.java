@@ -2,7 +2,6 @@ package dev.xkmc.lightland.content.magic.item.oriental.circle;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,11 +33,11 @@ public abstract class InstantMagic extends AbstractCircleMagic {
     public abstract InteractionResultHolder<ItemStack> wandUse(Level level, Player player, InteractionHand hand);
 
     @Override
-    public void wandUseTick(Level level, LivingEntity entity, ItemStack stack, int tick) {
+    public void wandUseTick(Level level, Player player, ItemStack stack, int tick) {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick) {
+    public void wandReleaseUsing(ItemStack stack, Level level, Player player, int tick) {
     }
 
 }

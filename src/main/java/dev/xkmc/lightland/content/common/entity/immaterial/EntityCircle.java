@@ -1,5 +1,6 @@
 package dev.xkmc.lightland.content.common.entity.immaterial;
 
+import dev.xkmc.lightland.content.magic.client.render.immaterial.CircleRune;
 import dev.xkmc.lightland.init.registrate.LightlandEntities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
@@ -8,14 +9,29 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.ArrayList;
 
 public class EntityCircle extends EntityHasOwner implements IModedEntity {
 
     protected int deployTime = 10;
     protected int withdrawTime = 10;
 
+    protected ArrayList<CircleRune> runes = new ArrayList();
+
     public EntityCircle(EntityType<?> type, Level level) {
         super(type, level);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ArrayList<CircleRune> getRunes() {
+        if (runes.size() < 35) {
+            for (int i = 0; i < 35 - runes.size(); i++)
+                runes.add(CircleRune.create());
+        }
+        return runes;
     }
 
     public static EntityCircle create(Level level, Player player, int deploy, int withdraw, int life) {

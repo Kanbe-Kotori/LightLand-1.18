@@ -34,6 +34,7 @@ import dev.xkmc.lightland.content.magic.item.PotionCore;
 import dev.xkmc.lightland.content.magic.item.oriental.ModeUpgrade;
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.RainbowBarrage;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.RoughFireball;
 import dev.xkmc.lightland.content.questline.item.DispellWaterBottle;
 import dev.xkmc.lightland.content.questline.item.SlimeTentacleItem;
@@ -164,6 +165,7 @@ public class LightlandItems {
 
 	public static final ItemEntry<OrientalWand> BASIC_WAND;
 	public static final ItemEntry<RoughFireball> ROUGH_FIREBALL;
+	public static final ItemEntry<RainbowBarrage> RAINBOW_BARRAGE;
 
 	public static final ItemEntry<ModeUpgrade> MODE_SPEEDUP;
 	public static final ItemEntry<ModeUpgrade> MODE_POWERFUL;
@@ -210,6 +212,8 @@ public class LightlandItems {
 		BASIC_WAND = REGISTRATE.item("basic_wand", p -> new OrientalWand(p).addBonus(OrientalElement.FIRE, 0.05F).addBonus(OrientalElement.EARTH, 0.05F).addBonus(OrientalElement.GOLD, 0.05F).addBonus(OrientalElement.WATER, 0.05F).addBonus(OrientalElement.MOON, 0.05F).addBonus(OrientalElement.SUN, 0.05F).addBonus(OrientalElement.WOOD, 0.05F))
 				.defaultModel().defaultLang().register();
 		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", RoughFireball::new)
+				.defaultModel().defaultLang().register();
+		RAINBOW_BARRAGE = REGISTRATE.item("rainbow_barrage", RainbowBarrage::new)
 				.defaultModel().defaultLang().register();
 
 		MODE_SPEEDUP = 	REGISTRATE.item("mode_speedup", p -> new ModeUpgrade(p, AbstractCircleMagic.CircleMode.SPEEDUP))

@@ -10,7 +10,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -109,9 +108,9 @@ public abstract class AbstractCircleMagic extends Item {
 
     public abstract InteractionResultHolder<ItemStack> wandUse(Level level, Player player, InteractionHand hand);
 
-    public abstract void wandUseTick(Level level, LivingEntity entity, ItemStack stack, int tick);
+    public abstract void wandUseTick(Level level, Player player, ItemStack stack, int tick);
 
-    public abstract void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick);
+    public abstract void wandReleaseUsing(ItemStack stack, Level level, Player player, int tick);
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
@@ -145,7 +144,7 @@ public abstract class AbstractCircleMagic extends Item {
         component.append("[");
         component.append(modeText);
         component.append("]");
-        component.append(super.getName(stack));
+        component.append(super.getName(stack).plainCopy());
         return component;
     }
 
@@ -154,7 +153,7 @@ public abstract class AbstractCircleMagic extends Item {
         MutableComponent elemental_type = new TranslatableComponent("lightland.oriental.circle_type");
         for (Map.Entry<OrientalElement, Float> entry : ((AbstractCircleMagic)stack.getItem()).elements.entrySet()) {
             float value = entry.getValue();
-            String valueStr = " " + entry.getKey().getName() + (value >= 0? "+" : "") + String.format("%.1f", 100 * value) + "%";
+            String valueStr = " " + entry.getKey().getName() + "×" + String.format("%.1f", 100 * value) + "%";
             elemental_type.append(valueStr);
         }
         list.add(elemental_type);
