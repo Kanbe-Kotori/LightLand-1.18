@@ -1,10 +1,7 @@
 package dev.xkmc.lightland.content.common.entity.immaterial;
 
-import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
 import dev.xkmc.lightland.init.registrate.LightlandEntities;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,26 +9,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityCircle extends EntityHasOwner {
+public class EntityCircle extends EntityHasOwner implements IModedEntity {
 
-    protected static final EntityDataAccessor<Integer> DEPLOY_TIME = SynchedEntityData.defineId(EntityRoughFireball.class, EntityDataSerializers.INT);
-
+    protected int deployTime = 10;
     protected int withdrawTime = 10;
 
     public EntityCircle(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DEPLOY_TIME, 10);
-    }
-
-    public static EntityCircle create(Level level, Player player, int deploy, int life) {
+    public static EntityCircle create(Level level, Player player, int deploy, int withdraw, int life) {
         EntityCircle circle = new EntityCircle(LightlandEntities.CIRCLE.get(), level);
         circle.setOwner(player);
-        circle.setDeployTime(deploy);
+        circle.deployTime = deploy;
+        circle.withdrawTime = withdraw;
         circle.lifeRemain = life < 0 ? -1 : life + circle.withdrawTime;
 
         circle.setPos(player.position());
@@ -46,22 +37,25 @@ public class EntityCircle extends EntityHasOwner {
     }
 
     public static EntityCircle create(Level level, Player player) {
-        return create(level, player, 10, -1);
+        return create(level, player, 10, 10, -1);
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        super.writeSpawnData(buffer);
+        buffer.writeInt(this.deployTime);
+        buffer.writeInt(this.withdrawTime);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf data) {
+        super.readSpawnData(data);
+        this.deployTime = data.readInt();
+        this.withdrawTime = data.readInt();
     }
 
     public int getDeployTime() {
-        return this.entityData.get(DEPLOY_TIME);
-    }
-
-    public void setDeployTime(int time) {
-        this.entityData.set(DEPLOY_TIME, time);
-    }
-
-    public void setDeployTime(AbstractCircleMagic.CircleMode mode) {
-        switch (mode) {
-            case SPEEDUP -> setDeployTime((int) (getDeployTime() * 0.75F));
-            case EFFICIENT -> setDeployTime((int) (getDeployTime() * 1.5F));
-        }
+        return this.deployTime;
     }
 
     public int getWithdrawTime() {
@@ -119,4 +113,20 @@ public class EntityCircle extends EntityHasOwner {
         return Mth.lerp(0.2F, p_37274_, p_37275_);
     }
 
+    @Override
+    public void powerful() {
+
+    }
+
+    @Override
+    public void efficient() {
+        this.deployTime *= 1.5F;
+        this.withdrawTime *= 1.5F;
+    }
+
+    @Override
+    public void speedup() {
+        this.deployTime *= 0.75F;
+        this.withdrawTime *= 0.75F;
+    }
 }

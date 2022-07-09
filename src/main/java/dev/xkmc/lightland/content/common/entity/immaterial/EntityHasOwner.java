@@ -2,25 +2,23 @@ package dev.xkmc.lightland.content.common.entity.immaterial;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.UUID;
 
-public abstract class EntityHasOwner extends Entity implements OwnableEntity {
+public abstract class EntityHasOwner extends Entity implements OwnableEntity, IEntityAdditionalSpawnData {
 
     protected static String TAG_OWNER_UUID = "OwnerUUID";
-    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHasOwner.class, EntityDataSerializers.OPTIONAL_UUID);
+    public String ownerUUID = "";
 
     protected static String TAG_LIFE_REMAIN = "lifeRemain";
     protected int lifeRemain = -1;
@@ -30,11 +28,14 @@ public abstract class EntityHasOwner extends Entity implements OwnableEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER_UNIQUE_ID, Optional.empty());
+    public Packet<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void setLife(int life) {
+    @Override
+    protected void defineSynchedData() {}
+
+    public void setMaxLife(int life) {
         this.lifeRemain = life;
     }
 
@@ -79,14 +80,25 @@ public abstract class EntityHasOwner extends Entity implements OwnableEntity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        if (this.getOwnerUUID() == null)
+            buffer.writeUUID(UUID.randomUUID());
+        else
+            buffer.writeUUID(UUID.fromString(this.getOwnerUUID().toString()));
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf data) {
+        this.setOwnerId(data.readUUID());
     }
 
     @Nullable
     @Override
     public UUID getOwnerUUID() {
-        return this.entityData.get(OWNER_UNIQUE_ID).orElse(null);
+        if (this.ownerUUID.equals(""))
+            return null;
+        else
+            return UUID.fromString(this.ownerUUID);
     }
 
     @Nullable
@@ -105,6 +117,7 @@ public abstract class EntityHasOwner extends Entity implements OwnableEntity {
     }
 
     public void setOwnerId(@Nullable UUID uuid) {
-        this.entityData.set(OWNER_UNIQUE_ID, Optional.of(uuid));
+        if (uuid != null)
+            this.ownerUUID = uuid.toString();
     }
 }

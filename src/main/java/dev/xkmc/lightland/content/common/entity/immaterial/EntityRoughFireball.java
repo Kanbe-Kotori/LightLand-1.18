@@ -3,9 +3,7 @@ package dev.xkmc.lightland.content.common.entity.immaterial;
 import dev.xkmc.lightland.init.registrate.LightlandEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,11 +15,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityRoughFireball extends EntityFlying implements IModedEntity {
 
-    protected static final EntityDataAccessor<Integer> CHARGE_TIME = SynchedEntityData.defineId(EntityRoughFireball.class, EntityDataSerializers.INT);
+    protected int chargeTime = 20;
     protected int lifeAfterShoot = 50;
 
     protected static String TAG_ACCELERATION = "acceleration";
-    protected static final EntityDataAccessor<Float> ACCELERATION = SynchedEntityData.defineId(EntityRoughFireball.class, EntityDataSerializers.FLOAT);
+    protected float acceleration = .01F;
 
     protected static String TAG_DAMAGE = "damage";
     protected float damage = 8F;
@@ -30,17 +28,10 @@ public class EntityRoughFireball extends EntityFlying implements IModedEntity {
         super(type, level);
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHARGE_TIME, 20);
-        this.entityData.define(ACCELERATION, 0.01F);
-    }
-
     public static EntityRoughFireball create(Level level, Player player, float damageModifier) {
         EntityRoughFireball fireball = new EntityRoughFireball(LightlandEntities.ROUGH_FIREBALL.get(), level);
         fireball.setOwner(player);
-        fireball.lifeRemain = fireball.getChargeTime() + fireball.lifeAfterShoot;
+        fireball.lifeRemain = fireball.chargeTime + fireball.lifeAfterShoot;
         fireball.damage *= damageModifier;
         return fireball;
     }
@@ -48,65 +39,70 @@ public class EntityRoughFireball extends EntityFlying implements IModedEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
+        if (nbt.contains(TAG_ACCELERATION, Tag.TAG_FLOAT)) {
+            this.acceleration = nbt.getFloat(TAG_ACCELERATION);
+        }
         if (nbt.contains(TAG_DAMAGE, Tag.TAG_FLOAT)) {
             this.damage = nbt.getFloat(TAG_DAMAGE);
-        }
-        if (nbt.contains(TAG_ACCELERATION, Tag.TAG_FLOAT)) {
-            this.setAcc(nbt.getFloat(TAG_ACCELERATION));
         }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
+        nbt.putFloat(TAG_ACCELERATION, this.acceleration);
         nbt.putFloat(TAG_DAMAGE, this.damage);
-        nbt.putFloat(TAG_ACCELERATION, this.getAcc());
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        super.writeSpawnData(buffer);
+        buffer.writeInt(this.chargeTime);
+        buffer.writeFloat(this.acceleration);
+        buffer.writeFloat(this.damage);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf data) {
+        super.readSpawnData(data);
+        this.chargeTime = data.readInt();
+        this.acceleration = data.readFloat();
+        this.damage = data.readFloat();
+    }
+
+    public int getChargeTime() {
+        return this.chargeTime;
     }
 
     public void powerful() {
         this.damage *= 1.5F;
-        this.setAcc(this.getAcc() * 1.5F);
+        this.acceleration *= 1.5F;
     }
 
     public void efficient() {
-        this.setChargeTime((int) (this.getChargeTime() * 1.5F));
-        this.lifeRemain = this.getChargeTime() + this.lifeAfterShoot;
+        this.chargeTime *= 1.5F;
+        this.lifeRemain = this.chargeTime + this.lifeAfterShoot;
     }
 
     public void speedup() {
         this.damage *= 0.75F;
-        this.setAcc(this.getAcc() * 0.75F);
-        this.setChargeTime((int) (this.getChargeTime() * 0.75F));
-        this.lifeRemain = this.getChargeTime() + this.lifeAfterShoot;
+        this.acceleration *= 0.75F;
+        this.chargeTime *= 0.75F;
+        this.lifeRemain = this.chargeTime + this.lifeAfterShoot;
     }
 
-    public int getChargeTime() {
-        return this.entityData.get(CHARGE_TIME);
-    }
-
-    public void setChargeTime(int chargeTime) {
-        this.entityData.set(CHARGE_TIME, chargeTime);
-    }
-
-    public float getAcc() {
-        return this.entityData.get(ACCELERATION);
-    }
-
-    public void setAcc(float acc) {
-        this.entityData.set(ACCELERATION, acc);
-    }
-
+    @Override
     protected float getGravity() {
-        return this.tickCount > getChargeTime() ? -0.0002F : 0;
+        return this.tickCount > this.chargeTime ? -0.0002F : 0;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount > getChargeTime()) {
+        if (this.tickCount > this.chargeTime) {
             Vec3 v = this.getDeltaMovement();
-            this.setDeltaMovement(v.add(v.normalize().scale(getAcc())));
-        } else if (this.tickCount == getChargeTime()) {
-            this.setDeltaMovement(this.getOwner().getLookAngle().normalize().scale(getAcc()));
+            this.setDeltaMovement(v.add(v.normalize().scale(this.acceleration)));
+        } else if (this.tickCount == this.chargeTime) {
+            this.setDeltaMovement(this.getOwner().getLookAngle().normalize().scale(this.acceleration));
         } else {
             if (this.getOwner() instanceof Player player) {
                 if (!player.isUsingItem() && !level.isClientSide) {
@@ -129,7 +125,7 @@ public class EntityRoughFireball extends EntityFlying implements IModedEntity {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (this.getOwner() instanceof Player player) {
-            float actualDamage = this.tickCount > getChargeTime() ? damage : 0;
+            float actualDamage = this.tickCount > this.chargeTime ? damage : 0;
             entity.hurt(DamageSource.playerAttack(player).setIsFire(), actualDamage);
             entity.setSecondsOnFire((int) actualDamage);
         }

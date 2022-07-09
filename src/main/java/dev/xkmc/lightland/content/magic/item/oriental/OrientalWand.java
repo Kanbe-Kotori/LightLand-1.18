@@ -170,7 +170,8 @@ public class OrientalWand extends Item {
         if (circleStack.getItem() instanceof InstantMagic instant) {
             InteractionResultHolder<ItemStack> result = instant.wandUse(level, player, hand);
             if (result.getResult() != InteractionResult.PASS) {
-                EntityCircle circle = EntityCircle.create(level, player, 0, 5);
+                EntityCircle circle = EntityCircle.create(level, player, 0, 10, 5);
+                circle.setMode(AbstractCircleMagic.getMode(circleStack));
                 level.addFreshEntity(circle);
                 setCircleFullCD(stack);
                 return InteractionResultHolder.success(stack);
@@ -180,7 +181,7 @@ public class OrientalWand extends Item {
             InteractionResultHolder<ItemStack> result = con.wandUse(level, player, hand);
             if (result.getResult() != InteractionResult.PASS) {
                 EntityCircle circle = EntityCircle.create(level, player);
-                circle.setDeployTime(AbstractCircleMagic.getMode(circleStack));
+                circle.setMode(AbstractCircleMagic.getMode(circleStack));
                 level.addFreshEntity(circle);
                 player.startUsingItem(hand);
                 return InteractionResultHolder.consume(stack);
@@ -190,7 +191,7 @@ public class OrientalWand extends Item {
             InteractionResultHolder<ItemStack> result = delay.wandUse(level, player, hand);
             if (result.getResult() != InteractionResult.PASS) {
                 EntityCircle circle = EntityCircle.create(level, player);
-                circle.setDeployTime(AbstractCircleMagic.getMode(circleStack));
+                circle.setMode(AbstractCircleMagic.getMode(circleStack));
                 level.addFreshEntity(circle);
                 player.startUsingItem(hand);
                 return InteractionResultHolder.consume(stack);
