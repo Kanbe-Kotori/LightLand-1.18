@@ -34,6 +34,7 @@ import dev.xkmc.lightland.content.magic.item.PotionCore;
 import dev.xkmc.lightland.content.magic.item.oriental.ModeUpgrade;
 import dev.xkmc.lightland.content.magic.item.oriental.OrientalWand;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.AbstractCircleMagic;
+import dev.xkmc.lightland.content.magic.item.oriental.circle.MagnetCore;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.RainbowBarrage;
 import dev.xkmc.lightland.content.magic.item.oriental.circle.RoughFireball;
 import dev.xkmc.lightland.content.questline.item.DispellWaterBottle;
@@ -166,6 +167,7 @@ public class LightlandItems {
 	public static final ItemEntry<OrientalWand> BASIC_WAND;
 	public static final ItemEntry<RoughFireball> ROUGH_FIREBALL;
 	public static final ItemEntry<RainbowBarrage> RAINBOW_BARRAGE;
+	public static final ItemEntry<MagnetCore> MAGNET_CORE;
 
 	public static final ItemEntry<ModeUpgrade> MODE_SPEEDUP;
 	public static final ItemEntry<ModeUpgrade> MODE_POWERFUL;
@@ -214,6 +216,8 @@ public class LightlandItems {
 		ROUGH_FIREBALL = REGISTRATE.item("rough_fireball", RoughFireball::new)
 				.defaultModel().defaultLang().register();
 		RAINBOW_BARRAGE = REGISTRATE.item("rainbow_barrage", RainbowBarrage::new)
+				.defaultModel().defaultLang().register();
+		MAGNET_CORE = REGISTRATE.item("magnet_core", MagnetCore::new)
 				.defaultModel().defaultLang().register();
 
 		MODE_SPEEDUP = 	REGISTRATE.item("mode_speedup", p -> new ModeUpgrade(p, AbstractCircleMagic.CircleMode.SPEEDUP))

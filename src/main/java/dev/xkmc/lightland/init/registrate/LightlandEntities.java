@@ -131,6 +131,7 @@ public class LightlandEntities {
 	public static final EntityEntry<EntityCircle> CIRCLE;
 	public static final EntityEntry<EntityRoughFireball> ROUGH_FIREBALL;
 	public static final EntityEntry<EntityRainbowOrb> RAINBOW_ORB;
+	public static final EntityEntry<EntityMagnetCore> MAGNET_CORE;
 
 	static {
 		CIRCLE = LightLand.REGISTRATE
@@ -153,6 +154,13 @@ public class LightlandEntities {
 						.clientTrackingRange(4).updateInterval(20)
 						.setShouldReceiveVelocityUpdates(true))
 				.renderer(() -> RenderRainbowOrb::new)
+				.defaultLang().register();
+		MAGNET_CORE = LightLand.REGISTRATE
+				.<EntityMagnetCore>entity("magnet_core", EntityMagnetCore::new, MobCategory.MISC)
+				.properties(e -> e.sized(0.5F, 0.5F)
+						.clientTrackingRange(4).updateInterval(20)
+						.setShouldReceiveVelocityUpdates(true))
+				.renderer(() -> RenderMagnetCore::new)
 				.defaultLang().register();
 	}
 

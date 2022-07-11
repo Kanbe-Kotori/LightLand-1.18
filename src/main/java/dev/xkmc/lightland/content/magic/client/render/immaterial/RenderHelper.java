@@ -42,7 +42,7 @@ public class RenderHelper {
         }
     }
 
-    public static void round2d(MultiBufferSource buffer, Matrix4f m, float x, float y, float z, float r, float w, int gradation, int color) {
+    public static void ring2d(MultiBufferSource buffer, Matrix4f m, float x, float y, float z, float r, float w, int gradation, int color) {
         VertexConsumer vc = buffer.getBuffer(ImmaterialRenderType.triangleStrip());
         for (int i = 0; i <= gradation; ++i) {
             float yPos = y + r * Mth.sin(i * 2 * Mth.PI / gradation);
@@ -54,7 +54,7 @@ public class RenderHelper {
         }
     }
 
-    public static void round2dRainbow(MultiBufferSource buffer, Matrix4f m, float x, float y, float z, float r, float w, int gradation) {
+    public static void ring2dRainbow(MultiBufferSource buffer, Matrix4f m, float x, float y, float z, float r, float w, int gradation) {
         VertexConsumer vc = buffer.getBuffer(ImmaterialRenderType.triangleStrip());
         for (int i = 0; i <= gradation; ++i) {
             int color = getRainbowColor((double)i / gradation);

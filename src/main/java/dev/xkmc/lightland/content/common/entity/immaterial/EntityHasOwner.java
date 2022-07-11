@@ -53,6 +53,11 @@ public abstract class EntityHasOwner extends Entity implements OwnableEntity, IE
                 this.kill();
                 return;
             }
+        } else if (tickCount > 1200) {
+            if (!level.isClientSide) {
+                this.kill();
+                return;
+            }
         }
 
     }

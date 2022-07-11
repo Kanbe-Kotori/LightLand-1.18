@@ -35,7 +35,7 @@ public class OrientalWand extends Item {
     private static final String TAG_CIRCLE = "circle";
 
     public OrientalWand(Properties props) {
-        super(props);
+        super(props.stacksTo(1));
     }
 
     public OrientalWand addBonus(OrientalElement element, float value) {
