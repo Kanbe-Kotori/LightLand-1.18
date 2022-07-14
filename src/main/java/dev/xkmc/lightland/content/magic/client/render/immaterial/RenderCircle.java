@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.xkmc.lightland.content.common.entity.immaterial.EntityCircle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -59,8 +60,8 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
         float w1 = 0.04F;
         float w2 = 0.03F;
 
-        if (getScale(entity) != 1) {
-            float scale = getScale(entity);
+        if (getScale(entity, partialTicks) != 1) {
+            float scale = getScale(entity, partialTicks);
             d *= scale;
             r1 *= scale;
             r2 *= scale;
@@ -71,7 +72,8 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
         RenderHelper.ring2d(buffer, m, d, 0, 0, r1, w1, 120, 0x3FFFFFFF);
         RenderHelper.ring2d(buffer, m, d, 0, 0, r2, w1, 120, 0x3FFFFFFF);
 
-        float tickRot = (entity.tickCount % 200) / 200F * 360.0F;
+        float actualLife = entity.tickCount + partialTicks;
+        float tickRot = (actualLife % 200) / 200F * 360.0F;
         stack.mulPose(Vector3f.XP.rotationDegrees(tickRot));
 
         float r12 = (r1 + r2) / 2;
@@ -117,12 +119,18 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
         stack.popPose();
     }
 
-    private static float getScale(EntityCircle entity) {
-        if (entity.getRemainLife() < entity.getWithdrawTime() && entity.getRemainLife() >= 0) {
-            return 1F * entity.getRemainLife() / entity.getWithdrawTime();
+    private static float getScale(EntityCircle entity, float partialTicks) {
+        float actualLife = entity.tickCount + partialTicks;
+        float actualRemain = entity.getRemainLife() - partialTicks;
+
+        if (actualLife < entity.getDeployTime()) {
+            return actualLife / entity.getDeployTime();
         }
-        if (entity.tickCount < entity.getDeployTime()) {
-            return 1F * entity.tickCount / entity.getDeployTime();
+        if (actualRemain < entity.getWithdrawTime() && actualRemain > -1) {
+            if (actualRemain > 0)
+                return actualRemain / entity.getWithdrawTime();
+            else
+                return 0;
         }
         return 1F;
     }
