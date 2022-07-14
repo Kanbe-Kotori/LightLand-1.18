@@ -30,7 +30,7 @@ public class RenderRainbowOrb extends EntityRenderer<EntityRainbowOrb> {
 
         Matrix4f m = stack.last().pose();
 
-        RenderHelper.sphere(buffer, m, 0, 0, 0, 0.2F, 30, getColor(entity));
+        RenderHelper.sphere(buffer, m, 0, 0, 0, 0.2F, 8, getColor(entity));
 
         stack.popPose();
     }

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.xkmc.lightland.content.common.entity.immaterial.EntityCircle;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -60,32 +59,32 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
         float w1 = 0.04F;
         float w2 = 0.03F;
 
-        if (getScale(entity, partialTicks) != 1) {
-            float scale = getScale(entity, partialTicks);
-            d *= scale;
+        float scale = getScale(entity, partialTicks);
+        if (scale != 1) {
+            //d *= scale;
             r1 *= scale;
             r2 *= scale;
             w1 *= scale;
             w2 *= scale;
         }
 
-        RenderHelper.ring2d(buffer, m, d, 0, 0, r1, w1, 120, 0x3FFFFFFF);
-        RenderHelper.ring2d(buffer, m, d, 0, 0, r2, w1, 120, 0x3FFFFFFF);
-
         float actualLife = entity.tickCount + partialTicks;
         float tickRot = (actualLife % 200) / 200F * 360.0F;
         stack.mulPose(Vector3f.XP.rotationDegrees(tickRot));
 
+        RenderHelper.ring2d(buffer, m, d, 0, 0, r1, w1, 14, 0x3FFFFFFF);
+        RenderHelper.ring2d(buffer, m, d, 0, 0, r2, w1, 14, 0x3FFFFFFF);
+
         float r12 = (r1 + r2) / 2;
         float rs = (r1 - r2) / 2 - w1;
 
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[0], r12 * cos2pi_7[0], rs, w1, 60, 0x7FFF0000);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[1], r12 * cos2pi_7[1], rs, w1, 60, 0x7FFF7F00);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[2], r12 * cos2pi_7[2], rs, w1, 60, 0x7FFFFF00);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[3], r12 * cos2pi_7[3], rs, w1, 60, 0x7F00FF00);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[4], r12 * cos2pi_7[4], rs, w1, 60, 0x7F00FFFF);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[5], r12 * cos2pi_7[5], rs, w1, 60, 0x7F0000FF);
-        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[6], r12 * cos2pi_7[6], rs, w1, 60, 0x7F7F00FF);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[0], r12 * cos2pi_7[0], rs, w1, 8, 0x7FFF0000);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[1], r12 * cos2pi_7[1], rs, w1, 8, 0x7FFF7F00);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[2], r12 * cos2pi_7[2], rs, w1, 8, 0x7FFFFF00);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[3], r12 * cos2pi_7[3], rs, w1, 8, 0x7F00FF00);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[4], r12 * cos2pi_7[4], rs, w1, 8, 0x7F00FFFF);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[5], r12 * cos2pi_7[5], rs, w1, 8, 0x7F0000FF);
+        RenderHelper.ring2d(buffer, m, d, r12 * sin2pi_7[6], r12 * cos2pi_7[6], rs, w1, 8, 0x7F7F00FF);
 
         RenderHelper.line2d(buffer,m,d,r12 * sin2pi_7[0], r12 * cos2pi_7[0],r12 * sin2pi_7[3], r12 * cos2pi_7[3],w1,0x3FFF0000,0x3F00FF00);
         RenderHelper.line2d(buffer,m,d,r12 * sin2pi_7[3], r12 * cos2pi_7[3],r12 * sin2pi_7[6], r12 * cos2pi_7[6],w1,0x3F00FF00,0x3F7F00FF);
@@ -114,7 +113,7 @@ public class RenderCircle extends EntityRenderer<EntityCircle> {
         stack.mulPose(Vector3f.XP.rotationDegrees(-3*tickRot));
 
         float ri = r12 * Mth.cos(3 * Mth.PI / 7) - w1;
-        RenderHelper.ring2dRainbow(buffer, m, d, 0, 0, ri, w1, 120);
+        RenderHelper.ring2dRainbow(buffer, m, d, 0, 0, ri, w1, 7);
 
         stack.popPose();
     }
